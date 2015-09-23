@@ -231,7 +231,7 @@ func (c *Report) Errors(sorted bool) error {
 	}
 
 	if sorted {
-		c.errors.Sort()
+		c.errors.RemoveMultiples()
 	}
 	return c.errors
 }
