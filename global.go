@@ -173,7 +173,12 @@ func (c *Report) ErrPosition(position token.Position, format string, arg ...inte
 		return
 	}
 
-	c.errorsMu.Lock() // X+
+	c.errorsMu.Lock()         // X+
+	defer c.errorsMu.Unlock() // X-
+
+	if c.PanicOnError {
+		panic(fmt.Errorf("%s: %v", position, fmt.Sprintf(format, arg...)))
+	}
 
 	c.errors.Add(position, fmt.Sprintf(format, arg...))
 
@@ -185,11 +190,6 @@ func (c *Report) ErrPosition(position token.Position, format string, arg ...inte
 		}
 	}
 
-	c.errorsMu.Unlock() // X-
-
-	if c.PanicOnError {
-		panic(c.Errors(true))
-	}
 }
 
 // Err reports an error at pos.
