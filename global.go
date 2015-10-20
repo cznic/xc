@@ -35,7 +35,7 @@ var (
 	// Files is a ready to use FileCentral.
 	Files = NewFileCentral()
 
-	// Default strutil.PrettyPrintHooks.
+	// PrintHooks define default strutil.PrettyPrintHooks.
 	PrintHooks = strutil.PrettyPrintHooks{
 		reflect.TypeOf(lex.Char{}): func(f strutil.Formatter, v interface{}, prefix, suffix string) {
 			c := v.(lex.Char)
@@ -226,13 +226,13 @@ func (c *Report) Errors(sorted bool) error {
 	c.errorsMu.Lock()
 	defer c.errorsMu.Unlock()
 
+	if sorted {
+		c.errors.Sort()
+	}
 	if len(c.errors) == 0 {
 		return nil
 	}
 
-	if sorted {
-		c.errors.RemoveMultiples()
-	}
 	return c.errors
 }
 
