@@ -155,7 +155,7 @@ func (d *Dictionary) insert(q *dictD, i int, k int) *dictD {
 func (d *Dictionary) overflow(p *dictX, q *dictD, pi, i int, k int) {
 	l, r := p.siblings(pi)
 
-	if l != nil && l.c < 2*dictKD {
+	if l != nil && l.c < 2*dictKD && i > 0 {
 		l.mvL(q, 1)
 		d.insert(q, i-1, k)
 		p.x[pi-1].k = q.d[0]
