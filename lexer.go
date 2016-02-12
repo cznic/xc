@@ -5,6 +5,8 @@
 package xc
 
 import (
+	"go/token"
+
 	"github.com/cznic/golex/lex"
 	"github.com/cznic/strutil"
 )
@@ -20,3 +22,6 @@ func (t Token) S() []byte { return Dict.S(t.Val) }
 
 // String implements fmt.Stringer.
 func (t Token) String() string { return strutil.PrettyString(t, "", "", PrintHooks) }
+
+// Position returns position of t.
+func (t *Token) Position() token.Position { return FileSet.Position(t.Pos()) }
