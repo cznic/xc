@@ -11,6 +11,7 @@ import (
 	"go/token"
 	"log"
 	"os"
+	"path/filepath"
 	"reflect"
 	"runtime"
 	"strings"
@@ -113,10 +114,16 @@ type FileCentral struct {
 // NewFileCentral returns a newly created FileCentral.
 func NewFileCentral() *FileCentral { return &FileCentral{onces: map[string]*Once{}} }
 
-// Once returns the *Once associated with id. If the value of the returned
-// object needs to be set, Once starts the set function in a new goroutine to
-// obtain the value. Once will panic is the set function returns nil.
+// Once returns the *Once associated with id, which must be a file path. If the
+// value of the returned object needs to be set, Once starts the set function
+// in a new goroutine to obtain the value. Once will panic is the set function
+// returns nil.
 func (f *FileCentral) Once(id string, set func() interface{}) *Once {
+	var err error
+	if id, err = filepath.Abs(id); err != nil {
+		return nil
+	}
+
 	f.onceMu.Lock()
 	v := f.onces[id]
 	if v == nil {
