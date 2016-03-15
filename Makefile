@@ -10,6 +10,7 @@ all: editor
 	go vet
 	golint
 	make todo
+	unused . || true
 
 clean:
 	go clean

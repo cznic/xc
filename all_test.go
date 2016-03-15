@@ -42,7 +42,9 @@ func TODO(...interface{}) string {
 	return fmt.Sprintf("TODO: %s:%d:\n", path.Base(fn), fl)
 }
 
-func use(...interface{}) {}
+func use(...interface{}) int { return 42 }
+
+var _ = use(caller, dbg, TODO)
 
 // ============================================================================
 
