@@ -13,7 +13,6 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
-	"runtime"
 	"strings"
 	"sync"
 
@@ -53,8 +52,6 @@ var (
 			f.Format("%s%s"+suffix, prefix, Dict.S(int(v.(Val))))
 		},
 	}
-
-	workLimiter = newLimiter(2 * runtime.NumCPU())
 )
 
 func init() {
@@ -130,9 +127,6 @@ func (f *FileCentral) Once(id string, set func() interface{}) *Once {
 		v = newOnce()
 		f.onces[id] = v
 		go func() {
-			workLimiter.wait()
-			defer workLimiter.signal()
-
 			v.set(set())
 		}()
 	}
@@ -248,11 +242,3 @@ type Val int
 
 // String implements fmt.Stringer.
 func (v Val) String() string { return strutil.PrettyString(v, "", "", PrintHooks) }
-
-type limiter chan struct{}
-
-func newLimiter(n int) limiter { return make(limiter, n) }
-
-func (l limiter) wait() { l <- struct{}{} }
-
-func (l limiter) signal() { <-l }
