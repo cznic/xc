@@ -134,8 +134,8 @@ func (f *FileCentral) Once(id string, set func() interface{}) *Once {
 	return v
 }
 
-// Map calls fn for every pair of path and its associated and Once in f, in
-// random order. f is locked through the execution of Map.
+// Map calls fn for every pair of path and its associated Once in f, in random
+// order. f is locked through the execution of Map.
 //
 // If fn returns false, the iteration of f is aborted.
 func (f *FileCentral) Map(fn func(string, *Once) bool) {
