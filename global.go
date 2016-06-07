@@ -111,10 +111,10 @@ type FileCentral struct {
 // NewFileCentral returns a newly created FileCentral.
 func NewFileCentral() *FileCentral { return &FileCentral{onces: map[string]*Once{}} }
 
-// Once returns the *Once associated with id, which must be a file path. If the
-// value of the returned object needs to be set, Once starts the set function
-// in a new goroutine to obtain the value. Once will panic is the set function
-// returns nil.
+// Once returns the *Once associated with id, which must be an absolute path.
+// If the value of the returned object needs to be set, Once starts the set
+// function in a new goroutine to obtain the value. Once will panic is the set
+// function returns nil.
 func (f *FileCentral) Once(id string, set func() interface{}) *Once {
 	var err error
 	if id, err = filepath.Abs(id); err != nil {
@@ -132,6 +132,21 @@ func (f *FileCentral) Once(id string, set func() interface{}) *Once {
 	}
 	f.onceMu.Unlock()
 	return v
+}
+
+// Map calls fn for every pair of path and its associated and Once in f, in
+// random order. f is locked through the execution of Map.
+//
+// If fn returns false, the iteration of f is aborted.
+func (f *FileCentral) Map(fn func(string, *Once) bool) {
+	f.onceMu.Lock()
+	defer f.onceMu.Unlock()
+
+	for k, v := range f.onces {
+		if !fn(k, v) {
+			return
+		}
+	}
 }
 
 // Report provides centralized error collecting. Methods of Report are
