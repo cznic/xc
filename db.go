@@ -26,7 +26,8 @@ type MemDB struct {
 	pages  [][]byte
 }
 
-func newMemDB() *MemDB {
+// NewMemDB returns a newly create *MemDB.
+func NewMemDB() *MemDB {
 	d := &MemDB{}
 	for i := 0; i < 256; i++ {
 		d.b256[i] = byte(i)

@@ -23,11 +23,11 @@ import (
 var (
 	// DB keeps parser/compiler data shared between stages. See also *MemDB
 	// methods.
-	DB = newMemDB()
+	DB = NewMemDB()
 
 	// Dict collects unique []byte values using the global DB variable.
 	// See also *Dictionary methods.
-	Dict = newDictionary()
+	Dict = NewDictionary()
 
 	// FileSet represents a set of source files.
 	FileSet = token.NewFileSet()

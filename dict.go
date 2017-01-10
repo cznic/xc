@@ -90,7 +90,8 @@ type Dictionary struct {
 	r  interface{}
 }
 
-func newDictionary() *Dictionary {
+// NewDictionary returns a newly created *Dictionary.
+func NewDictionary() *Dictionary {
 	return &Dictionary{}
 }
 

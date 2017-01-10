@@ -61,7 +61,7 @@ func newRng() *mathutil.FC32 {
 func TestDBBytes(t *testing.T) {
 	const n = 29e4
 	rng := newRng()
-	db := newMemDB()
+	db := NewMemDB()
 	exp := map[int][]byte{}
 	var buf []byte
 	for i := 0; i < n; i++ {
@@ -124,7 +124,7 @@ func TestDBBytes(t *testing.T) {
 func TestDict(t *testing.T) {
 	const n = 15e4
 
-	dict := newDictionary()
+	dict := NewDictionary()
 
 	rng := newRng()
 	m := map[string]int{}
