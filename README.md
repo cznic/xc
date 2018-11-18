@@ -1,8 +1,5 @@
-# xc
-Package xc provides cross language compiler support/utility stuff.
+`github.com/cznic/xc` has moved to [`modernc.org/xc`](https://godoc.org/modernc.org/xc) ([vcs](https://gitlab.com/cznic/xc)).
 
-Installation
+Please update your import paths to `modernc.org/xc`.
 
-    $ go get github.com/cznic/xc
-
-Documentation: [godoc.org/github.com/cznic/xc](http://godoc.org/github.com/cznic/xc)
+This repo is now archived.
